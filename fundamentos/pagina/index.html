@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeLab - Fundamentos de Java</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(90deg, #1a1a1a 0%, #333 50%, #1a1a1a 100%);
+            padding: 20px 0;
+            box-shadow: 0 5px 20px rgba(255, 193, 7, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 193, 7, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ffc107, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-menu li a {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .nav-menu li a:hover, .nav-menu li a.active {
+            background: linear-gradient(45deg, #ffc107, #ffeb3b);
+            color: #1a1a1a;
+            border: 1px solid #ffc107;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 80px 0;
+            background: radial-gradient(circle at center, rgba(255, 193, 7, 0.1) 0%, transparent 70%);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ffc107, #ffffff, #ffc107);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 20px rgba(255, 193, 7, 0.5); }
+            to { text-shadow: 0 0 30px rgba(255, 193, 7, 0.8); }
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: #cccccc;
+            margin-bottom: 30px;
+        }
+
+        .modules-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        .module-card {
+            background: linear-gradient(135deg, #2d2d2d 0%, #3d3d3d 100%);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 193, 7, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ffc107, #ffeb3b, #ffc107, #ffeb3b);
+            border-radius: 20px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .module-card:hover::before {
+            opacity: 1;
+        }
+
+        .module-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(255, 193, 7, 0.2);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .module-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, #ffc107, #ffeb3b);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            font-size: 1.5rem;
+            color: #1a1a1a;
+        }
+
+        .module-title {
+            font-size: 1.8rem;
+            color: #ffc107;
+            margin: 0;
+        }
+
+        .sections-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .section {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255, 193, 7, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .section:hover {
+            border-color: #ffc107;
+            box-shadow: 0 5px 20px rgba(255, 193, 7, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .section h3 {
+            color: #ffc107;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section h3::before {
+            content: '▶';
+            margin-right: 10px;
+            color: #ffc107;
+            transition: transform 0.3s ease;
+        }
+
+        .section.expanded h3::before {
+            transform: rotate(90deg);
+        }
+
+        .section-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .section.expanded .section-content {
+            max-height: 1000px;
+        }
+
+        .code-example {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            color: #ffc107;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .code-example::before {
+            content: 'Java';
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .highlight {
+            background: rgba(255, 193, 7, 0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #ffc107;
+            font-weight: bold;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.1) 0%, rgba(255, 193, 7, 0.05) 100%);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #333;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ffc107, #ffeb3b);
+            width: 0%;
+            transition: width 1s ease;
+            border-radius: 3px;
+        }
+
+        footer {
+            background: #1a1a1a;
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 50px;
+            border-top: 1px solid rgba(255, 193, 7, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-menu {
+                gap: 15px;
+            }
+            
+            .nav-menu li a {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .sections-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">CodeJava</div>
+                <nav>
+                    <ul class="nav-menu">
+                        <li><a href="#" class="active">Fundamentos</a></li>
+                        <li><a href="#">POO</a></li>
+                        <li><a href="#">Estructuras</a></li>
+                        <li><a href="#">Proyectos</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Fundamentos de Java</h1>
+            <p>Domina los conceptos básicos de la programación en Java</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+    </section>
+
+    <main class="container">
+        <div class="modules-container">
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-icon">☕</div>
+                    <h2 class="module-title">Módulo 1: Fundamentos de Programación en Java</h2>
+                </div>
+
+                <div class="sections-grid">
+                    <div class="section" onclick="toggleSection(this)">
+                        <h3>1. Variables y Tipos de Datos</h3>
+                        <div class="section-content">
+                            <p>En Java existen tipos primitivos y sus equivalentes como clases Wrapper para manejar datos de manera más flexible.</p>
+                            
+                            <h4 style="color: #ffc107; margin: 20px 0 10px;">Tipos Primitivos</h4>
+                            <ul style="margin-left: 20px; line-height: 1.8;">
+                                <li><span class="highlight">int</span> → números enteros (ej: 5, 100, -25)</li>
+                                <li><span class="highlight">double</span> → números decimales (ej: 3.14, 2.5, -0.75)</li>
+                                <li><span class="highlight">char</span> → un solo carácter (ej: 'A', '5', '@')</li>
+                                <li><span class="highlight">boolean</span> → valores lógicos true o false</li>
+                                <li><span class="highlight">byte, short, long, float</span> → otros tipos numéricos</li>
+                            </ul>
+
+                            <div class="code-example">
+                                int edad = 25;
+                                double precio = 19.99;
+                                char inicial = 'J';
+                                boolean activo = true;
+                            </div>
+
+                            <h4 style="color: #ffc107; margin: 20px 0 10px;">Clases Wrapper</h4>
+                            <p>Cada tipo primitivo tiene su clase equivalente:</p>
+                            <ul style="margin-left: 20px; line-height: 1.8;">
+                                <li>int → <span class="highlight">Integer</span></li>
+                                <li>double → <span class="highlight">Double</span></li>
+                                <li>char → <span class="highlight">Character</span></li>
+                                <li>boolean → <span class="highlight">Boolean</span></li>
+                            </ul>
+
+                            <div class="info-box">
+                                <strong>Ventajas de las Wrapper:</strong><br>
+                                • Autoboxing/Unboxing automático<br>
+                                • Métodos útiles como Integer.parseInt("123")<br>
+                                • Constantes como Integer.MAX_VALUE
+                            </div>
+
+                            <div class="code-example">
+                                Integer numero = 42; // Autoboxing
+                                String texto = "123";
+                                int convertido = Integer.parseInt(texto);
+                                int maximo = Integer.MAX_VALUE;
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section" onclick="toggleSection(this)">
+                        <h3>2. Operadores Aritméticos</h3>
+                        <div class="section-content">
+                            <p>Los operadores aritméticos nos permiten realizar cálculos matemáticos básicos:</p>
+                            
+                            <ul style="margin: 20px 0; margin-left: 20px; line-height: 1.8;">
+                                <li><span class="highlight">+</span> → suma</li>
+                                <li><span class="highlight">-</span> → resta</li>
+                                <li><span class="highlight">*</span> → multiplicación</li>
+                                <li><span class="highlight">/</span> → división</li>
+                                <li><span class="highlight">%</span> → módulo (residuo de la división)</li>
+                            </ul>
+
+                            <div class="code-example">
+                                int a = 10;
+                                int b = 3;
+
+                                System.out.println(a + b); // 13
+                                System.out.println(a - b); // 7  
+                                System.out.println(a * b); // 30
+                                System.out.println(a / b); // 3
+                                System.out.println(a % b); // 1 (residuo)
+                            </div>
+
+                            <div class="info-box">
+                                <strong>Tip:</strong> El operador módulo (%) es muy útil para determinar si un número es par o impar: si numero % 2 == 0, entonces es par.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section" onclick="toggleSection(this)">
+                        <h3>3. Condicionales</h3>
+                        <div class="section-content">
+                            <p>Las estructuras condicionales nos permiten ejecutar código según ciertas condiciones.</p>
+                            
+                            <h4 style="color: #ffc107; margin: 20px 0 10px;">if - else if - else</h4>
+                            <p>Ejecuta bloques de código dependiendo de condiciones booleanas:</p>
+
+                            <div class="code-example">
+                                int edad = 18;
+
+                                if (edad >= 18) {
+                                    System.out.println("Eres mayor de edad");
+                                } else if (edad >= 13) {
+                                    System.out.println("Eres adolescente");
+                                } else {
+                                    System.out.println("Eres menor de edad");
+                                }
+                            </div>
+
+                            <h4 style="color: #ffc107; margin: 20px 0 10px;">switch</h4>
+                            <p>Evalúa una variable contra múltiples opciones específicas:</p>
+
+                            <div class="code-example">
+                                int dia = 1;
+
+                                switch (dia) {
+                                    case 1:
+                                    System.out.println("Lunes");
+                                    break;
+                                case 2:
+                                    System.out.println("Martes");
+                                    break;
+                                default:
+                                    System.out.println("Otro día");
+                                    break;
+                                }
+                            </div>
+
+                            <div class="info-box">
+                                <strong>Operadores de comparación:</strong><br>
+                                == (igual), != (diferente), &lt; (menor), &gt; (mayor), &lt;= (menor igual), &gt;= (mayor igual)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section" onclick="toggleSection(this)">
+                        <h3>4. Bucles (Ciclos)</h3>
+                        <div class="section-content">
+                            <p>Los bucles nos permiten repetir código múltiples veces de manera eficiente.</p>
+                            
+                            <h4 style="color: #ffc107; margin: 20px 0 10px;">for</h4>
+                            <p>Se usa cuando sabes exactamente cuántas veces repetir algo:</p>
+
+                            <div class="code-example">
+                                // Imprime números del 1 al 5
+                                for (int i = 1; i <= 5; i++) {
+                                    System.out.println("Número: " + i);
+                                }
+
+                                // Recorrer un arreglo
+                                int[] numeros = {1, 2, 3, 4, 5};
+                                for (int numero : numeros) {
+                                    System.out.println(numero);
+                                }
+                            </div>
+
+                            <h4 style="color: #ffc107; margin: 20px 0 10px;">while</h4>
+                            <p>Repite mientras una condición sea verdadera:</p>
+
+                            <div class="code-example">
+                                int contador = 0;
+                                while (contador < 3) {
+                                    System.out.println("Iteración: " + contador);
+                                    contador++;
+                                }
+                            </div>
+
+                            <h4 style="color: #ffc107; margin: 20px 0 10px;">do-while</h4>
+                            <p>Siempre se ejecuta al menos una vez:</p>
+
+                            <div class="code-example">
+                                int numero;
+                                do {
+                                    numero = (int)(Math.random() * 10) + 1;
+                                    System.out.println("Número generado: " + numero);
+                                } while (numero != 5);
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section" onclick="toggleSection(this)">
+                        <h3>5. Sentencias de Control de Flujo</h3>
+                        <div class="section-content">
+                            <p>Estas sentencias nos permiten controlar el flujo de ejecución en bucles y métodos.</p>
+                            
+                            <h4 style="color: #ffc107; margin: 20px 0 10px;">break</h4>
+                            <p>Termina completamente el bucle actual:</p>
+
+                            <div class="code-example">
+                                for (int i = 1; i <= 10; i++) {
+                                    if (i == 5) {
+                                        break; // Sale del bucle cuando i es 5
+                                    }
+                                    System.out.println(i); // Imprime 1, 2, 3, 4
+                                }
+                            </div>
+
+                            <h4 style="color: #ffc107; margin: 20px 0 10px;">continue</h4>
+                            <p>Salta a la siguiente iteración del bucle:</p>
+
+                            <div class="code-example">
+                                for (int i = 1; i <= 5; i++) {
+                                    if (i == 3) {
+                                        continue; // Salta cuando i es 3
+                                    }
+                                    System.out.println(i); // Imprime 1, 2, 4, 5
+                                }
+                            </div>
+
+                            <h4 style="color: #ffc107; margin: 20px 0 10px;">return</h4>
+                            <p>Termina un método y opcionalmente devuelve un valor:</p>
+
+                            <div class="code-example">
+                                public static int suma(int a, int b) {
+                                    return a + b; // Termina el método y devuelve la suma
+                                }
+
+                                public static void saludar() {
+                                    System.out.println("Hola!");
+                                    return; // Opcional en métodos void
+                                }
+                            </div>
+
+                            <div class="info-box">
+                                <strong>Tip práctico:</strong> Usa break para salir de bucles cuando encuentres lo que buscas, y continue para saltarte elementos que no necesitas procesar.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 CodeJava - Plataforma Educativa Java. Desarrollado para el aprendizaje.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleSection(element) {
+            element.classList.toggle('expanded');
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const sections = document.querySelectorAll('.section');
+            const expandedSections = document.querySelectorAll('.section.expanded');
+            const progress = (expandedSections.length / sections.length) * 100;
+            
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        // Animación de entrada
+        window.addEventListener('load', function() {
+            const cards = document.querySelectorAll('.section');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+
+        // Inicializar estilos para la animación
+        document.querySelectorAll('.section').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'all 0.5s ease';
+        });
+
+        // Efecto de partículas en el fondo (opcional)
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.style.position = 'fixed';
+            particle.style.left = Math.random() * 100 + 'vw';
+            particle.style.top = '100vh';
+            particle.style.width = '2px';
+            particle.style.height = '2px';
+            particle.style.background = '#ffc107';
+            particle.style.borderRadius = '50%';
+            particle.style.pointerEvents = 'none';
+            particle.style.animation = 'float 8s linear infinite';
+            particle.style.opacity = '0.3';
+            
+            document.body.appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 8000);
+        }
+
+        // Crear partículas ocasionalmente
+        setInterval(createParticle, 3000);
+
+        // CSS para la animación de partículas
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes float {
+                0% {
+                    transform: translateY(0) rotate(0deg);
+                    opacity: 0.3;
+                }
+                50% {
+                    opacity: 0.6;
+                }
+                100% {
+                    transform: translateY(-100vh) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
