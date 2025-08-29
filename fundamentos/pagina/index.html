@@ -293,6 +293,14 @@
             margin-top: 50px;
             border-top: 1px solid rgba(255, 193, 7, 0.2);
         }
+        .repositorio {
+            text-decoration: none;
+            color: red;
+            font-size: 20px;
+        }
+        .repositorio:hover{
+            color: rgb(255, 132, 0);
+        }
 
         @media (max-width: 768px) {
             .hero h1 {
@@ -311,6 +319,7 @@
             .sections-grid {
                 grid-template-columns: 1fr;
             }
+
         }
     </style>
 </head>
@@ -563,6 +572,12 @@
                             <div class="info-box">
                                 <strong>Tip práctico:</strong> Usa break para salir de bucles cuando encuentres lo que buscas, y continue para saltarte elementos que no necesitas procesar.
                             </div>
+                        </div>
+                    </div>
+                    <div class="section" onclick="toggleSection(this)">
+                        <h3>6. Repositorio GitHub </h3>
+                        <div class="section-content">
+                            <a class="repositorio" href="https://github.com/Kevin-tech-developer/clase_java_ibero.git" >Repositorio Java 🍵</a>
                         </div>
                     </div>
                 </div>
